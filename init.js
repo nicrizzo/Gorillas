@@ -265,20 +265,24 @@ dojo.provide("Gorillas.init");
 		bindEvents: function(){
 			var self = this;
 			dojo.connect(dijit.byId("g0shoot"), "onClick", function(evt){
-				evt.target.blur();
-				self.shoot({
-					which:0,
-					speed: dijit.byId("g0speed").attr("value"),
-					angle: dijit.byId("g0angle").attr("value")
-				});
+				if(dijit.byId("g0speed").isValid() && dijit.byId("g0angle").isValid()){
+					evt.target.blur();
+					self.shoot({
+						which:0,
+						speed: dijit.byId("g0speed").attr("value"),
+						angle: dijit.byId("g0angle").attr("value")
+					});
+				}
 			});
 			dojo.connect(dijit.byId("g1shoot"), "onClick", function(evt){
-				evt.target.blur();
-				self.shoot({
-					which:1,
-					speed: dijit.byId("g1speed").attr("value"),
-					angle: dijit.byId("g1angle").attr("value")
-				});
+				if(dijit.byId("g1speed").isValid() && dijit.byId("g1angle").isValid()){
+					evt.target.blur();
+					self.shoot({
+						which:1,
+						speed: dijit.byId("g1speed").attr("value"),
+						angle: dijit.byId("g1angle").attr("value")
+					});
+				}
 			});
 			dojo.connect(dojo.doc, "onkeyup", this, "onKeyUp");
 		}
