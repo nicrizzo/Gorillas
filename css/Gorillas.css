@@ -16,6 +16,7 @@ html,body{
 	margin:-100px auto;
 	height:200px;
 	top:50%;
+	left:0;
 	line-height:200px;
 	font:bold 13px/200px sans, arial;
 }
@@ -100,6 +101,7 @@ pre.gorilla span.legs{
 }
 div.playAgain{
 	position:absolute;
+	left:0;
 	top:50%;
 	width: 100%;
 	text-align:center;
