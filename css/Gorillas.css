@@ -1,0 +1,112 @@
+html,body{
+	background:#000;
+	text-align:center;
+	color:#fff;
+	text-align:center;
+}
+#main{
+	display:none;
+	margin:0;
+	padding:0;
+	position:relative;
+}
+#splash{
+	position:absolute;
+	width:100%;
+	margin:-100px auto;
+	height:200px;
+	top:50%;
+	line-height:200px;
+	font:bold 13px/200px sans, arial;
+}
+#splash span.goril{
+	color:#555;
+}
+h6{
+	text-transform:uppercase;
+	font:bold 17px arial;
+}
+h6 span.ascii{
+	color:red;
+}
+.city div.weapon{
+	color:yellow;
+	font:bold 17px monospace;
+}
+.city{
+	height:400px;
+	width:800px;
+	background:blue;
+	position:relative;
+	overflow:hidden;
+	margin:10px auto;
+	border:2px solid #ddd;
+}
+pre.gorilla{
+	font-weight:bold;
+	color:white;
+	padding:0;
+	margin:0;
+	background:transparent;
+	border:none;
+	z-index:20;
+}
+pre.gorilla span.arm{
+	color:#c99;
+}
+pre.gorilla span.legs{
+	color:#c99;
+}
+.controls{
+	color:#333;
+	position:absolute;
+	top:0;
+	border:1px solid #ddd;
+	background:#fff;
+	width:200px;
+	z-index:50;
+	display:none;
+}
+#g0controls{
+	left:0;
+}
+#g1controls{
+	right:0;
+}
+.messageBar{
+	height:40px;
+	position:absolute;
+	bottom:0;
+	left:0;
+	width:800px;
+	background:#666;
+	color:#ddd;
+	text-align:left;
+}
+.p1Score{
+	float:left;
+	height:40px;
+	line-height:40px;
+	padding-left:30px;
+}
+.p2Score{
+	float:right;
+	height:40px;
+	line-height:40px;
+	padding-right:30px;
+}
+.xeye{
+	color:red;
+}
+div.playAgain{
+	position:absolute;
+	top:50%;
+	width: 100%;
+	text-align:center;
+	text-transform:uppercase;
+	color: #555;
+	background:#aaa;
+	border-top:1px solid #666;
+	border-bottom:1px solid #666;
+	display:none;
+}
