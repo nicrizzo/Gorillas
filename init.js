@@ -8,6 +8,10 @@ dojo.provide("Gorillas.init");
 		gTemplateBoom: "<pre class='gorilla'> <span class='xeye'>X</span>___<span class='xeye'>X</span>\n &gt;<span class='arm'>--</span>I<span class='arm'>--</span>&lt;\n<span class='legs'> / \\</span class='legs'></pre>",
 		// pixels / meter
 		pxmt: 7,
+		_handTimeout: 0,
+		_speedTimeout: 0,
+		_cityMoves: 5,
+		_rCounter: 0,
 		currentFrame: 0,
 		weaponFrames: ["|", "/", "-", "\\", "|", "/", "-", "\\"],
 		gWidth: 0,
@@ -20,6 +24,9 @@ dojo.provide("Gorillas.init");
 		games: 0,
 		score: [0,0],
 		weapon: null,
+		explosion: null,
+		speed: null,
+		hand: null,
 		gorillas: [],
 		playAgain: null,
 		buildingsCoords: [],
@@ -54,25 +61,64 @@ dojo.provide("Gorillas.init");
 				});
 			}
 		},
+		makeHand: function(){
+			this.hand = dojo.create("div", {
+				className: "hand",
+				innerHTML: "<div class='arrowBody'></div><div class='arrowHeadContainer'><div class='arrowHead'></div></div>"
+			}, "city");
+			dojo.style(this.hand, "transformOrigin", "40% 50%");
+			dojo.query(".arrowHead").style({
+				transformOrigin: "0 0",
+				transform: "rotate(135deg)"
+			})
+		},
+		makeSpeed: function(){
+			this.speed = dojo.create("div", {
+				className: "speed",
+				innerHTML: "0.0 m/s"
+			}, "city");
+		},
+		makeExplosion: function(){
+			this.explosion = dojo.create("div",{
+				className: "explosion",
+				innerHTML : "\\|/<br />---<br />/|\\"
+			}, "city");
+		},
 		makeWeapon: function(){
 			this.weapon = dojo.create("div", {
-				innerHTML: "\\",
+				innerHTML: "<div class='banana'>\\</div>",
 				className: "weapon",
 				display: "none",
 				style: {
-					position: "absolute",
 					bottom: "0",
 					left: "0"
 				}
 			}, "city");
 		},
-		boom: function(){
-			dojo.attr(this.weapon,{
-				innerHTML: "\\|/<br />---<br />/|\\",
-				style: {
-					color: "red"
-				}
+		moveCity: function(){
+			var x = 10 - Math.random() * 20,
+				y = 10 - Math.random() * 20
+			;
+			dojo.style("city", {
+				top: y + "px",
+				left: x + "px"
 			});
+			if(this._rCounter < this._cityMoves){
+				this._rCounter++;
+				setTimeout(dojo.hitch(this, "moveCity"), 50);
+			}else{
+				this._rCounter = 0;
+			}
+		},
+		boom: function(){
+			dojo.style(this.explosion, {
+				bottom: parseInt(dojo.style(this.weapon, "bottom")) + "px",
+				left: parseInt(dojo.style(this.weapon, "left")) + "px",
+				display: "block"
+
+			});
+			dojo.style(this.weapon, "display", "none");
+			setTimeout(dojo.hitch(this, "moveCity"), 50);
 		},
 		shoot: function(/* Object */ args){
 			dojo.query("div.controls").style("display", "none");
@@ -106,11 +152,11 @@ dojo.provide("Gorillas.init");
 							left: Math.round(currentGorilla.left + self.gWidth / 2) + "px",
 							color: "yellow",
 							display: ""
-						},
-						innerHTML: "\\"
+						}//,
+//						innerHTML: "<div class='banana'>\\</div>"
 					});
 					timer = (new Date).getTime();
-					wRotation = setInterval(dojo.hitch(self, self.rotateWeapon, signum), 80);
+//					wRotation = setInterval(dojo.hitch(self, self.rotateWeapon, signum), 80);
 				},
 				onEnd: function(){
 					clearInterval(wRotation);
@@ -132,9 +178,13 @@ dojo.provide("Gorillas.init");
 						bottom: wBottom + "px",
 						left:  wLeft + "px"
 					});
+					dojo.style(weapon.firstChild, {
+						transform: "rotate(" + (signum*cTime*8) + "rad)"
+					});
 					if(detectGorillaCollision.call(self, ({x: wLeft, y: wBottom }))){
 						self.status = "gcollision";
 						this.stop();
+						setTimeout(dojo.hitch(self, "moveCity"), 50);
 					}else if(detectCollision.call(self, ({x: wLeft, y: wBottom }))){
 						self.status = "collision";
 						self.boom();
@@ -224,15 +274,21 @@ dojo.provide("Gorillas.init");
 			this.status = "";
 			this.currentPlayer = this.turns & 1;
 			dojo.style(this.weapon, "display", "none");
+			dojo.style(this.explosion, "display", "none");
 			dojo.style("g" + this.currentPlayer + "controls", "display", "block");
-			dijit.byId("g" + this.currentPlayer + "speed").focus();
 		},
 		reset: function(){
-			dojo.query(".building, #g0, #g1").forEach(function(node){ dojo.destroy(node)});
+			dojo.query(".building, #g0, #g1, .hand, .speed, .explosion", dojo.byId("city")).forEach(function(node){ dojo.destroy(node)});
 			this.makeBuildings();
 			this.makeGorillas();
+			this.makeHand();
+			this.makeSpeed();
+			this.makeExplosion();
 			dojo.place(this.weapon, "city");
+			dojo.place(this.hand, "city");
+			dojo.place(this.speed, "city");
 			dojo.place(this.playAgain, "city");
+			dojo.place(this.explosion, "city");
 			dojo.place("messageBar", "city");
 		},
 		startup: function(){
@@ -241,8 +297,11 @@ dojo.provide("Gorillas.init");
 			dojo.style("main", "display", "block");
 			dojo.query(".controls").style("opacity", ".7");
 			this.makeGorillas();
+			this.makeHand();
+			this.makeSpeed();
 			this.makeMessageBar();
 			this.makeWeapon();
+			this.makeExplosion();
 			this.makeReplayMessage();
 			this.bindEvents();
 			this.turn();
@@ -262,27 +321,56 @@ dojo.provide("Gorillas.init");
 				this.turn();
 			}
 		},
+		changeSpeed: function(v){
+			if(dojo.style(this.speed, "display") === "none"){
+				this.showSpeed();
+			}
+			this.hideHand();
+			this.speed.innerHTML = (v).toFixed(2) + " m/s";
+			if(this._speedTimeout){
+				clearTimeout(this._speedTimeout);
+				this._speedTimeout = 0;
+			}
+			this._speedTimeout = setTimeout(dojo.hitch(this, this.hideSpeed), 1000);
+		},
+		rotateHand: function(a){
+			var sig = this.currentPlayer == 0 ? -1 : +1;
+			if(dojo.style(this.hand, "display") === "none"){
+				this.showHand();
+			}
+			this.hideSpeed();
+			dojo.style(this.hand, "transform", "rotate("  + (sig*a - this.currentPlayer*180) + "deg)");
+			if(this._handTimeout){
+				clearTimeout(this._handTimeout);
+				this._handTimeout = 0;
+			}
+			this._handTimeout = setTimeout(dojo.hitch(this, this.hideHand), 1000);
+		},
+		showSpeed: function(){
+			dojo.style(this.speed, "display", "block");
+		},
+		hideSpeed: function(){
+			dojo.style(this.speed, "display", "none");
+		},
+		showHand: function(){
+			dojo.style(this.hand, "display", "block");
+		},
+		hideHand: function(){
+			dojo.style(this.hand, "display", "none");
+		},
 		bindEvents: function(){
 			var self = this;
-			dojo.connect(dijit.byId("g0shoot"), "onClick", function(evt){
-				if(dijit.byId("g0speed").isValid() && dijit.byId("g0angle").isValid()){
+			dojo.forEach([0, 1], function(i){
+				dojo.connect(dijit.byId("g" + i + "angle"), "onChange", self, "rotateHand");
+				dojo.connect(dijit.byId("g" + i + "speed"), "onChange", self, "changeSpeed");
+				dojo.connect(dijit.byId("g" + i + "shoot"), "onClick", function(evt){
 					evt.target.blur();
 					self.shoot({
-						which:0,
-						speed: dijit.byId("g0speed").attr("value"),
-						angle: dijit.byId("g0angle").attr("value")
+						which:i,
+						speed: dijit.byId("g" + i + "speed").attr("value"),
+						angle: dijit.byId("g" + i + "angle").attr("value")
 					});
-				}
-			});
-			dojo.connect(dijit.byId("g1shoot"), "onClick", function(evt){
-				if(dijit.byId("g1speed").isValid() && dijit.byId("g1angle").isValid()){
-					evt.target.blur();
-					self.shoot({
-						which:1,
-						speed: dijit.byId("g1speed").attr("value"),
-						angle: dijit.byId("g1angle").attr("value")
-					});
-				}
+				});
 			});
 			dojo.connect(dojo.doc, "onkeyup", this, "onKeyUp");
 		}

@@ -30,9 +30,31 @@ h6{
 h6 span.ascii{
 	color:red;
 }
+.city div.explosion{
+	font:bold 17px monospace;
+	position:absolute;
+	bottom:0;
+	left:0;
+	color:red;
+	display:none;
+}
 .city div.weapon{
+	font:bold 17px monospace;
+	position:absolute;
+	bottom:0;
+	left:0;
+	overflow:hidden;
+	height:17px;
+	width:17px;
+}
+.city div.weapon div.banana{
+	position:absolute;
+	bottom:0;
+	left:0;
 	color:yellow;
 	font:bold 17px monospace;
+	height:17px;
+	width:17px;
 }
 .city{
 	height:400px;
@@ -111,4 +133,47 @@ div.playAgain{
 	border-top:1px solid #666;
 	border-bottom:1px solid #666;
 	display:none;
+}
+.speed{
+	position:absolute;
+	top:105px;
+	left:300px;
+	height:71px;
+	width:200px;
+	display:none;
+	font-size:3em;
+	color:#3d3;
+}
+
+.hand{
+	position:absolute;
+	top:165px;
+	left:300px;
+	height:71px;
+	width:200px;
+	display:none;
+}
+.hand .arrowBody{
+	position:absolute;
+	background: #4c4;
+	top:10px;
+	left:0;
+	width:125px;
+	height:50px;
+}
+.hand .arrowHeadContainer{
+	position:absolute;
+	width:75px;
+	height:75px;
+	right:2px;
+	top:0;
+	overflow:hidden;
+}
+.hand .arrowHead{
+	position:absolute;
+	top:36px;
+	left:36px;
+	background: #4c4;
+	height:75px;
+	width:75px;
 }

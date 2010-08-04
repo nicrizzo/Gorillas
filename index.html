@@ -13,13 +13,85 @@
 			<h6>Gorill<span class="ascii">ascii</span></h6>
 			<div id="city" class="city">
 				<div class="controls" id="g0controls">
-					<div>speed <input id="g0speed" type="text" constraints="{ min:0, max:100 }" dojoType="dijit.form.NumberTextBox" /></div>
-					<div>angle <input id="g0angle" type="text" constraints="{ min:0, max:360 }" dojoType="dijit.form.NumberTextBox" /></div>
+					speed
+					<div dojoType="dijit.form.HorizontalSlider"
+						value="10"
+						maximum="80"
+						minimum="0"
+						pageIncrement="1"
+						showButtons="true"
+						intermediateChanges="true"
+						slideDuration="100"
+						style="width:200px; height: 20px;"
+						id="g0speed">
+							<div dojoType="dijit.form.HorizontalRule" container="bottomDecoration" count="5" style="height:5px;"></div>
+							<ol dojoType="dijit.form.HorizontalRuleLabels" container="topDecoration" style="height:1em;font-size:75%;">
+								<li>0</li>
+								<li>80</li>
+							</ol>
+					</div>
+					<br />
+					angle
+					<div dojoType="dijit.form.HorizontalSlider"
+						value="20"
+						maximum="90"
+						minimum="0"
+						pageIncrement="1"
+						showButtons="true"
+						intermediateChanges="true"
+						slideDuration="100"
+						style="width:200px; height: 20px;"
+						id="g0angle">
+							<div dojoType="dijit.form.HorizontalRule" container="bottomDecoration" count="5" style="height:5px;"></div>
+							<ol dojoType="dijit.form.HorizontalRuleLabels" container="topDecoration" style="height:1em;font-size:75%;">
+								<li>0</li>
+								<li>90</li>
+							</ol>
+					</div>
+					
+
+					<!--<div>speed <input id="g0speed" type="text" constraints="{ min:0, max:100 }" dojoType="dijit.form.NumberTextBox" /></div>-->
+					<!--<div>angle <input id="g0angle" type="text" constraints="{ min:0, max:360 }" dojoType="dijit.form.NumberTextBox" /></div>-->
 					<button dojoType="dijit.form.Button" id="g0shoot">shoot!</button>
 				</div>
 				<div class="controls" id="g1controls">
-					<div>speed <input id="g1speed" type="text" constraints="{ min:0, max:100 }" dojoType="dijit.form.NumberTextBox" /></div>
-					<div>angle <input id="g1angle" type="text" constraints="{ min:0, max:360 }" dojoType="dijit.form.NumberTextBox" /></div>
+					speed
+					<div dojoType="dijit.form.HorizontalSlider"
+						value="10"
+						maximum="80"
+						minimum="0"
+						pageIncrement="1"
+						showButtons="true"
+						intermediateChanges="true"
+						slideDuration="100"
+						style="width:200px; height: 20px;"
+						id="g1speed">
+							<div dojoType="dijit.form.HorizontalRule" container="bottomDecoration" count="5" style="height:5px;"></div>
+							<ol dojoType="dijit.form.HorizontalRuleLabels" container="topDecoration" style="height:1em;font-size:75%;">
+								<li>0</li>
+								<li>80</li>
+							</ol>
+					</div>
+					<br />
+					angle
+					<div dojoType="dijit.form.HorizontalSlider"
+						value="20"
+						maximum="90"
+						minimum="0"
+						pageIncrement="1"
+						showButtons="true"
+						intermediateChanges="true"
+						slideDuration="100"
+						style="width:200px; height: 20px;"
+						id="g1angle">
+							<div dojoType="dijit.form.HorizontalRule" container="bottomDecoration" count="5" style="height:5px;"></div>
+							<ol dojoType="dijit.form.HorizontalRuleLabels" container="topDecoration" style="height:1em;font-size:75%;">
+								<li>0</li>
+								<li>90</li>
+							</ol>
+					</div>
+					<!--<div>speed <input id="g1speed" type="text" constraints="{ min:0, max:100 }" dojoType="dijit.form.NumberTextBox" /></div>-->
+					<!--<div>angle <input id="g1angle" type="text" constraints="{ min:0, max:360 }" dojoType="dijit.form.NumberTextBox" /></div>-->
 					<button dojoType="dijit.form.Button" id="g1shoot">shoot!</button>
 				</div>
 			</div>
